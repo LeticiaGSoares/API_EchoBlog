@@ -1,35 +1,34 @@
 import conn from '../config/conn.js'
 import { DataTypes } from 'sequelize'
 
-const table_mysql = "post"
+const table_mysql = "user"
 
-const Post = conn.define
+const User = conn.define
 (table_mysql, {
     id: {
         type: DataTypes.UUID, 
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true
     },
-    titulo: {
+    nome: {
         type: DataTypes.STRING, 
         allowNull: false,
-        required: true
     },
-    conteudo: {
+    email: {
         type: DataTypes.STRING,
         allowNull: false,
-        required: true
+        unique: true,
     },
-    autor: {
+    senha: {
         type: DataTypes.STRING,
-        allowNull: false,
-        required: true
+        allowNull: false
     },
-    image: {
-        type: DataTypes.STRING
+    papel: {
+        type: DataTypes.ENUM,
+        values: ["leitor", "autor", "administrador"]
     }
 }, {
     tableName: table_mysql,
 })
 
-export default Post;
+export default User;

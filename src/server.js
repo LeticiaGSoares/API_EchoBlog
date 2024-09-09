@@ -7,6 +7,7 @@ import conn from "./config/conn.js"
 import './models/postModel.js';
 
 import postRouter from './routes/postRouter.js'
+import userRouter from './routes/userRouter.js'
 
 const PORT = process.env.PORT || 3333
 const app = express()
@@ -24,6 +25,7 @@ conn.sync()
 .catch(error => console.error(error))
 
 app.use("/", postRouter)
+app.use("/usuarios", userRouter)
 
 app.get("*", (req, res) => {
     res.status(404).json({message: "Página não encontrado"})

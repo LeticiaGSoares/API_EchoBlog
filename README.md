@@ -115,3 +115,99 @@ O módulo de postagens do blog visa fornecer uma API para gerenciar o conteúdo 
 ### 6. **Considerações Finais**
 
 Este documento deve servir como uma base inicial para o desenvolvimento do módulo de postagens do blog. À medida que o projeto evolui, novos requisitos e funcionalidades podem ser adicionados para enriquecer o sistema. Quaisquer mudanças devem ser documentadas e formalizadas em versões futuras deste documento.
+---
+# Módulo 02
+
+### 1. **Visão Geral do Módulo de Usuário**
+
+O módulo de usuário do blog visa fornecer uma API para gerenciar o cadastro, autenticação e autorização de usuários. Este módulo permitirá que os usuários se registrem, façam login e gerenciem suas informações de perfil. Além disso, o módulo deve suportar diferentes níveis de acesso (por exemplo, administrador, autor e leitor) para permitir a gestão adequada de permissões e funcionalidades.
+
+---
+
+### 2. **Requisitos Funcionais**
+
+### 2.1. **Usuários**
+
+- **RF01 - Registro de Usuário**
+    - O sistema deve permitir que novos usuários se registrem fornecendo:
+        - `nome` (obrigatório): Nome completo do usuário.
+        - `email` (obrigatório e único): Endereço de email do usuário.
+        - `senha` (obrigatório): Senha de acesso.
+        - `papel` (opcional): Tipo de usuário (`administrador`, `autor`, `leitor`). O valor padrão é `leitor`.
+    - **Endpoint:** `POST /usuarios/registro`
+    - **Validação:** Os dados de entrada devem ser validados utilizando um esquema de validação (como Zod). A senha deve ter uma força mínima (ex.: pelo menos 8 caracteres, contendo letras e números).
+- **RF02 - Autenticação de Usuário (Login)**
+    - O sistema deve permitir que os usuários façam login fornecendo:
+        - `email`: E-mail do usuário.
+        - `senha`: Senha de acesso.
+    - O sistema deve retornar um token de autenticação (JWT) para ser usado em requisições subsequentes.
+    - **Endpoint:** `POST /usuarios/login`
+    - **Validação:** Os dados de entrada devem ser validados, e a autenticação deve garantir segurança adequada, como hash de senha e proteção contra ataques de força bruta.
+- **RF03 - Atualização de Perfil de Usuário**
+    - O sistema deve permitir que o usuário atualize suas informações de perfil, como nome, e-mail e senha.
+    - **Endpoint:** `PUT /usuarios/:id`
+    - **Validação:** Os dados de entrada devem ser validados, e a atualização deve garantir que o e-mail permaneça único.
+- **RF04 - Listagem de Usuários (Admin)**
+    - O sistema deve permitir que administradores listem todos os usuários registrados, com opção de filtro por nome, email ou papel.
+    - **Endpoint:** `GET /usuarios`
+    - **Validação:** Acesso permitido apenas para usuários com o papel de `administrador`.
+- **RF05 - Exclusão de Usuário (Admin)**
+    - O sistema deve permitir que um administrador exclua um usuário específico pelo ID.
+    - **Endpoint:** `DELETE /usuarios/:id`
+    - **Validação:** Acesso permitido apenas para usuários com o papel de `administrador`.
+- **RF07 - Gerenciamento de Papéis de Usuário (Admin)**
+    - O sistema deve permitir que um administrador atribua ou altere o papel de um usuário (ex.: de `leitor` para `autor`).
+    - **Endpoint:** `PATCH /usuarios/:id/papel`
+    - **Validação:** Apenas administradores podem modificar os papéis dos usuários.
+
+---
+
+### 3. **Requisitos Não Funcionais**
+
+### 3.1. **Segurança**
+
+- Todas as senhas devem ser armazenadas utilizando hashing seguro (ex.: bcrypt).
+- O sistema deve implementar autenticação baseada em tokens (JWT) para proteger endpoints sensíveis.
+- Implementação de proteção contra ataques comuns (ex.: SQL Injection, XSS, CSRF).
+
+### 3.2. **Performance**
+
+- O sistema deve ser capaz de autenticar usuários com um tempo de resposta inferior a 300ms.
+
+### 3.3. **Manutenibilidade**
+
+- O código deve ser desenvolvido utilizando boas práticas, como separação de responsabilidades (controladores, serviços, repositórios).
+
+### 3.4. **Escalabilidade**
+
+- O sistema deve ser capaz de gerenciar até 100.000 usuários sem degradação significativa de performance.
+
+---
+
+### 4. **Restrições**
+
+- O sistema deve ser implementado utilizando Node.js com Express.
+- O banco de dados utilizado será MYSQL.
+- O módulo deve estar preparado para integração com bibliotecas de autenticação e autorização (como Passport.js ou JWT).
+
+---
+
+### 5. **Fluxo de Dados**
+
+1. **Registro de Usuário:**
+    - O usuário envia uma requisição `POST` com seus dados para registro.
+    - O sistema valida os dados, cria o usuário e retorna uma confirmação.
+2. **Login de Usuário:**
+    - O usuário envia uma requisição `POST` com seu email e senha.
+    - O sistema valida as credenciais e retorna um token de autenticação (JWT).
+3. **Atualização de Perfil:**
+    - O usuário envia uma requisição `PUT` com os dados atualizados.
+    - O sistema valida e atualiza as informações do perfil.
+4. **Listagem e Gerenciamento de Usuários (Admin):**
+    - O administrador visualiza, altera e exclui usuários conforme necessário.
+
+---
+
+### 6. **Considerações Finais**
+
+Este documento representa a segunda etapa do desenvolvimento do blog, focando na implementação do módulo de usuário. Este módulo deve garantir segurança e flexibilidade, permitindo futuras expansões para funcionalidades mais avançadas, como autenticação de dois fatores, integração com redes sociais e notificações de atividades.
