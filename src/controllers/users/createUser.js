@@ -14,26 +14,31 @@ const createSchema = z.object({
         .string()
         .min(8, {error: "A senha deve ter de 8 a 16 caracteres"}),
     papel: z
-        .enum(["leitor", "autor", "administrador"])
+        .enum(["leitor", "autor", "administrador"]),
+    imagem: z
+        .string()
+        .default("voRzk6zb8gbh9jyfo81zA6IcOQr5+rbqWvKObmBEE4.jpg"),
 })
 
 
 
 const createUser = async (req, res) => {
-    const {nome, email, senha, papel} = req.body
+    const {nome, email, senha, papel, imagem} = req.body
     const bodyValidation = createSchema.safeParse(req.body)
+    
     if(!bodyValidation.success){
         return res.status(400).json({
             message: "Erro interno do servidor",
             error: formatZodError(bodyValidation.error)
         })
     }
-
+    
     const novoUser = {
         nome,
         email,
         senha, 
         papel,
+        imagem,
     }
 
 

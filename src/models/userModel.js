@@ -26,7 +26,11 @@ const User = conn.define
     papel: {
         type: DataTypes.ENUM,
         values: ["leitor", "autor", "administrador"]
-    }
+    },
+    imagem: {
+        type: DataTypes.STRING,
+        defaultValue: "voRzk6zb8gbh9jyfo81zA6IcOQr5+rbqWvKObmBEE4.jpg"
+    },
 }, {
     tableName: table_mysql,
 })

@@ -23,7 +23,7 @@ const updateUserRole = async (req, res) => {
         return
     }
 
-    const {nome, email, senha, papel} = req.body
+    const {papel} = req.body
     const bodyValidation = updateSchema.safeParse(req.body)
     if(!bodyValidation.success){
         return res.status(500).json({
@@ -33,10 +33,7 @@ const updateUserRole = async (req, res) => {
     }
     
     const updatedUser = {
-        nome,
-        email,
-        senha, 
-        papel,
+        papel
     } 
     
     try{
