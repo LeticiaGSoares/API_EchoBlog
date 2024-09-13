@@ -16,7 +16,7 @@ const updateUserRole = async (req, res) => {
     
     const paramsValidation = getSchema.safeParse(req.params)
     if(!paramsValidation.success){
-        res.status(400).json({
+       return res.status(400).json({
             message: "Id do user é inválido",
             error: paramsValidation.error
         })
@@ -42,9 +42,9 @@ const updateUserRole = async (req, res) => {
             return res.status(404).json({message: "User não encontrado"})
         }
         
-        res.status(200).json({message: "User atualizado"})
+        return res.status(200).json({message: "User atualizado"})
     }catch(error){
-        res.status(500).json({message: "Erro interno do seridor" + error});
+       return res.status(500).json({message: "Erro interno do seridor" + error});
     }
 }
 

@@ -1,5 +1,6 @@
 import User from "../../models/userModel.js"
 import {z} from "zod";
+import { createUserToken } from "../../helpers/index.js";
 
 const loginSchema = z.object({
     email: z
@@ -7,10 +8,13 @@ const loginSchema = z.object({
         .email("Esse email não é válido")
         .refine((value) => /^([A-Z0-9_+-]+\.?)*[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i.test(value ?? ""), 
         'Name should contain only alphabets'),
+    senha: z
+        .string()
+        .min(8, {error: "A senha deve ter de 8 a 16 caracteres"}),
 })
 
 const loginAccount = async (req, res) => {
-    const {email,} = req.body
+    const {email, senha} = req.body
     const bodyValidation = loginSchema.safeParse(req.body)
     if(!bodyValidation.success){
         return res.status(500).json({
@@ -20,15 +24,15 @@ const loginAccount = async (req, res) => {
     }
 
     try{
-        const user = await User.findOne({where: {email: email}})
+        const user = await User.findOne({where: {email: email, senha: senha}})
 
         if (!user) {
-            return res.status(404).json({message: `email ${email} não foi registrado` });
+            return res.status(404).json({message: `email ou senha inválidos` });
         } 
 
-        res.status(200).json({message: user})
+        createUserToken(user, req, res)
     }catch (error){
-        res.status(500).json({message: "Erro interno do servidor" + error})
+       return res.status(500).json({message: "Erro interno do servidor" + error})
     }
 }
 

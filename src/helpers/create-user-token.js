@@ -3,14 +3,15 @@ import jwt from "jsonwebtoken"
 const createUserToken = async (usuario, req, res) => {
     
     const token = jwt.sign({
-        nome: usuario.username,
-        id: usuario.usuario_id
-    })
+        nome: usuario.nome,
+        id: usuario.id,
+        papel: usuario.papel,
+    }, process.env.JWT_SECRET)
 
     res.json({
         message: "Você está logado",
         token: token,
-        usuarioID: usuario.usuario_id
+        id: usuario.id
     })
 }
 
