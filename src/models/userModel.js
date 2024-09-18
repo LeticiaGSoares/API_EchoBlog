@@ -1,10 +1,8 @@
 import conn from '../config/conn.js'
 import { DataTypes } from 'sequelize'
 
-const table_mysql = "user"
-
 const User = conn.define
-(table_mysql, {
+("users", {
     id: {
         type: DataTypes.UUID, 
         defaultValue: DataTypes.UUIDV4,
@@ -32,7 +30,7 @@ const User = conn.define
         defaultValue: "voRzk6zb8gbh9jyfo81zA6IcOQr5+rbqWvKObmBEE4.jpg"
     },
 }, {
-    tableName: table_mysql,
+    tableName: "users",
 })
 
 export default User;

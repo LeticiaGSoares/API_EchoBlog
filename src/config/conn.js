@@ -1,14 +1,16 @@
 import "dotenv/config";
 import { Sequelize } from "sequelize";
+import db from "./databases.js";
 
-const db_name = process.env.MYSQL_DATABASE
-const db_user = process.env.MYSQL_USER
-const db_pass = process.env.MYSQL_PASSWORD
-
-const conn = new Sequelize(db_name, db_user, db_pass, {
-    host: process.env.MYSQL_HOST,
+const conn = new Sequelize(
+    db.bd, 
+    db.user, 
+    db.password, 
+    {
+    host: db.host,
     dialect: "mysql"
-})
+    }
+)
 
 try{
     await conn.authenticate();

@@ -1,14 +1,25 @@
 import Post from "../../models/postModel.js"
 
 const getAllPosts = async (req, res) => {
+    const queryValues = req.query
+
+    
     const page = parseInt(req.query.page) || 1
     const limit = 10
     const offset = (page - 1) * limit
     try{
-        const posts = await Post.findAndCountAll({
-            limit,
-            offset
-        })
+
+        const posts = async () => {
+            if(queryValues.contains('autor')){
+                return await Post.findByPk(queryValues.autor)
+            }else{
+                return await Post.findAndCountAll({
+                    limit,
+                    offset
+                })
+            }
+        }
+
 
         const totalPaginas = Math.ceil(posts.count / limit)
         res.status(200).json({

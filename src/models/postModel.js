@@ -1,10 +1,10 @@
 import conn from '../config/conn.js'
 import { DataTypes } from 'sequelize'
 
-const table_mysql = "post"
+import User from './userModel.js';
 
 const Post = conn.define
-(table_mysql, {
+("posts", {
     id: {
         type: DataTypes.UUID, 
         defaultValue: DataTypes.UUIDV4,
@@ -29,7 +29,10 @@ const Post = conn.define
         type: DataTypes.STRING
     }
 }, {
-    tableName: table_mysql,
+    tableName: "posts",
 })
+
+User.hasMany(Post)
+Post.belongsTo(User)
 
 export default Post;

@@ -33,7 +33,7 @@ conn.sync()
 })
 .catch(error => console.error(error))
 
-app.use("/", postRouter)
+app.use("/postagens", postRouter)
 app.use("/usuarios", userRouter)
 
 app.get("*", (req, res) => {
